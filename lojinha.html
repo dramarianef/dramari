@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>Lojinha da Dra Mari | Dra. Mariane Ferreira</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --nude:    #EDD5C5;
+      --rose:    #B87B6F;
+      --dark:    #1A1210;
+      --cream:   #F7F1EC;
+      --cream2:  #EFE6DF;
+      --text:    #2C2C2C;
+      --muted:   rgba(0,0,0,0.45);
+      --border:  rgba(0,0,0,0.08);
+      --white:   #FFFFFF;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ═══════════════════════════
+       HEADER
+    ═══════════════════════════ */
+    .header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: clamp(16px, 4vw, 24px) clamp(20px, 5vw, 40px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.92);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .header-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .header-title {
+      font-family: 'Cormorant', serif;
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+    .header-subtitle {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 300;
+    }
+    .back-link {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rose);
+      text-decoration: none;
+      font-weight: 400;
+      transition: opacity 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .back-link:hover { opacity: 0.7; }
+    .back-arrow {
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    /* ═══════════════════════════
+       HERO BANNER
+    ═══════════════════════════ */
+    .shop-hero {
+      background: linear-gradient(135deg, var(--nude) 0%, var(--cream2) 100%);
+      padding: clamp(40px, 8vw, 72px) clamp(20px, 5vw, 40px);
+      text-align: center;
+    }
+    .shop-overline {
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--rose);
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    .shop-title {
+      font-family: 'Cormorant', serif;
+      font-size: clamp(2rem, 7vw, 3.2rem);
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .shop-desc {
+      font-size: clamp(0.75rem, 2.2vw, 0.88rem);
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.7;
+      letter-spacing: 0.03em;
+    }
+
+    /* ═══════════════════════════
+       PRODUCTS GRID
+    ═══════════════════════════ */
+    .products-section {
+      padding: clamp(32px, 6vw, 56px) clamp(16px, 4vw, 40px);
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: clamp(16px, 3vw, 28px);
+    }
+
+    /* ═══════════════════════════
+       PRODUCT CARD
+    ═══════════════════════════ */
+    .product-card {
+      background: var(--white);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .product-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px rgba(184,123,111,0.12);
+      border-color: rgba(184,123,111,0.25);
+    }
+
+    .product-img-wrap {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .product-img {
+      width: 75%;
+      height: 75%;
+      object-fit: contain;
+      transition: transform 0.4s ease;
+    }
+    .product-card:hover .product-img {
+      transform: scale(1.05);
+    }
+    .product-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--rose);
+      color: #fff;
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 400;
+    }
+
+    .product-info {
+      padding: clamp(16px, 3vw, 22px);
+    }
+    .product-category {
+      font-size: 0.52rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rose);
+      font-weight: 400;
+      margin-bottom: 6px;
+    }
+    .product-name {
+      font-family: 'Cormorant', serif;
+      font-size: clamp(1.05rem, 2.8vw, 1.2rem);
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+    .product-desc {
+      font-size: clamp(0.68rem, 1.8vw, 0.74rem);
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.6;
+      letter-spacing: 0.03em;
+      margin-bottom: 16px;
+    }
+
+    .buy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      background: var(--rose);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 400;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+      width: 100%;
+      justify-content: center;
+    }
+    .buy-btn:hover {
+      background: #A06A5E;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(184,123,111,0.25);
+    }
+    .buy-btn:active {
+      transform: scale(0.98);
+    }
+    .buy-icon {
+      font-size: 0.9rem;
+      line-height: 1;
+    }
+
+    /* ═══════════════════════════
+       FOOTER
+    ═══════════════════════════ */
+    .footer {
+      text-align: center;
+      padding: clamp(28px, 5vw, 44px) 20px;
+      border-top: 1px solid var(--border);
+      background: var(--white);
+    }
+    .footer-text {
+      font-size: clamp(0.62rem, 1.8vw, 0.7rem);
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+    }
+    .footer-text a {
+      color: var(--rose);
+      text-decoration: none;
+    }
+
+    /* ═══════════════════════════
+       DISCLAIMER
+    ═══════════════════════════ */
+    .disclaimer {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 clamp(16px, 4vw, 40px) clamp(20px, 4vw, 32px);
+      text-align: center;
+    }
+    .disclaimer p {
+      font-size: 0.6rem;
+      color: rgba(0,0,0,0.3);
+      font-weight: 300;
+      line-height: 1.6;
+      letter-spacing: 0.03em;
+    }
+
+    /* ═══════════════════════════
+       SVG PLACEHOLDER ICONS
+    ═══════════════════════════ */
+    .placeholder-svg {
+      width: 60%;
+      height: 60%;
+      opacity: 0.25;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <img class="header-logo" src="logo.jpg" alt="Logo Dra. Mariane Ferreira"/>
+    <div>
+      <div class="header-title">Dra. Mariane Ferreira</div>
+      <div class="header-subtitle">Lojinha da Dra Mari</div>
+    </div>
+  </div>
+  <a class="back-link" href="index.html">
+    <span class="back-arrow">←</span>
+    Voltar
+  </a>
+</header>
+
+<!-- HERO -->
+<section class="shop-hero">
+  <p class="shop-overline">Selecionados para você</p>
+  <h1 class="shop-title">Lojinha da Dra Mari</h1>
+  <p class="shop-desc">Produtos odontológicos que eu uso e recomendo para cuidar do seu sorriso e da saúde bucal de toda a família.</p>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products-section">
+  <div class="products-grid">
+
+    <!-- Produto 1 - Escova de Dente Adulto -->
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <svg class="placeholder-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="54" y="10" width="12" height="70" rx="6" fill="#B87B6F"/>
+          <rect x="42" y="75" width="36" height="14" rx="4" fill="#B87B6F"/>
+          <rect x="38" y="85" width="44" height="28" rx="5" fill="#EDD5C5"/>
+          <line x1="44" y1="92" x2="76" y2="92" stroke="#B87B6F" stroke-width="1.5"/>
+          <line x1="44" y1="98" x2="76" y2="98" stroke="#B87B6F" stroke-width="1.5"/>
+          <line x1="44" y1="104" x2="76" y2="104" stroke="#B87B6F" stroke-width="1.5"/>
+        </svg>
+        <span class="product-badge">Recomendado</span>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Higiene Bucal</p>
+        <h3 class="product-name">Escova de Dente Adulto - Cerdas Macias</h3>
+        <p class="product-desc">Escova com cerdas ultra macias que protege o esmalte e cuida das gengivas. Ideal para uso diário com técnica de escovação adequada.</p>
+        <a class="buy-btn" href="#" target="_blank" rel="noopener">
+          <span class="buy-icon">🛒</span>
+          Comprar
+        </a>
+      </div>
+    </div>
+
+    <!-- Produto 2 - Escova de Dente Infantil -->
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <svg class="placeholder-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="54" y="18" width="10" height="55" rx="5" fill="#EDD5C5"/>
+          <rect x="44" y="68" width="30" height="12" rx="4" fill="#EDD5C5"/>
+          <rect x="40" y="76" width="38" height="24" rx="5" fill="#B87B6F" opacity="0.6"/>
+          <circle cx="60" cy="30" r="6" fill="#B87B6F" opacity="0.3"/>
+        </svg>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Infantil</p>
+        <h3 class="product-name">Escova de Dente Infantil</h3>
+        <p class="product-desc">Escova com cabeça compacta e cerdas extra macias, perfeita para os primeiros dentinhos. Cabo ergonômico para facilitar a escovação.</p>
+        <a class="buy-btn" href="#" target="_blank" rel="noopener">
+          <span class="buy-icon">🛒</span>
+          Comprar
+        </a>
+      </div>
+    </div>
+
+    <!-- Produto 3 - Creme Dental com Flúor -->
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <svg class="placeholder-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="35" y="40" width="50" height="55" rx="8" fill="#EDD5C5"/>
+          <rect x="45" y="25" width="30" height="20" rx="4" fill="#B87B6F"/>
+          <rect x="52" y="15" width="16" height="14" rx="3" fill="#B87B6F" opacity="0.7"/>
+          <line x1="45" y1="60" x2="75" y2="60" stroke="#B87B6F" stroke-width="1.5"/>
+          <line x1="45" y1="68" x2="75" y2="68" stroke="#B87B6F" stroke-width="1"/>
+          <line x1="45" y1="74" x2="65" y2="74" stroke="#B87B6F" stroke-width="1"/>
+        </svg>
+        <span class="product-badge">Mais vendido</span>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Higiene Bucal</p>
+        <h3 class="product-name">Creme Dental com Flúor 1450 ppm</h3>
+        <p class="product-desc">Pasta de dente com a concentração ideal de flúor recomendada por dentistas. Proteção eficaz contra cáries e fortalecimento do esmalte.</p>
+        <a class="buy-btn" href="#" target="_blank" rel="noopener">
+          <span class="buy-icon">🛒</span>
+          Comprar
+        </a>
+      </div>
+    </div>
+
+    <!-- Produto 4 - Creme Dental Infantil -->
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <svg class="placeholder-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="35" y="42" width="50" height="50" rx="8" fill="#B87B6F" opacity="0.4"/>
+          <rect x="45" y="28" width="30" height="18" rx="4" fill="#EDD5C5"/>
+          <rect x="52" y="18" width="16" height="14" rx="3" fill="#EDD5C5" opacity="0.8"/>
+          <circle cx="60" cy="67" r="12" fill="#EDD5C5"/>
+          <path d="M55 65 L58 70 L66 62" stroke="#B87B6F" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Infantil</p>
+        <h3 class="product-name">Creme Dental Infantil com Flúor</h3>
+        <p class="product-desc">Formulação especial para crianças, com sabor agradável e concentração de flúor segura para os pequenos. A partir dos 2 anos de idade.</p>
+        <a class="buy-btn" href="#" target="_blank" rel="noopener">
+          <span class="buy-icon">🛒</span>
+          Comprar
+        </a>
+      </div>
+    </div>
+
+    <!-- Produto 5 - Fio Dental -->
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <svg class="placeholder-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="60" r="32" fill="none" stroke="#B87B6F" stroke-width="3"/>
+          <circle cx="60" cy="60" r="22" fill="#EDD5C5"/>
+          <circle cx="60" cy="60" r="10" fill="#B87B6F" opacity="0.3"/>
+          <line x1="60" y1="28" x2="85" y2="15" stroke="#B87B6F" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Higiene Bucal</p>
+        <h3 class="product-name">Fio Dental Premium</h3>
+        <p class="product-desc">Fio dental encerado que desliza suavemente entre os dentes. Essencial para remover a placa bacteriana onde a escova não alcança.</p>
+        <a class="buy-btn" href="#" target="_blank" rel="noopener">
+          <span class="buy-icon">🛒</span>
+          Comprar
+        </a>
+      </div>
+    </div>
+
+    <!-- Produto 6 - Enxaguante Bucal -->
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <svg class="placeholder-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="38" y="30" width="44" height="70" rx="6" fill="#EDD5C5"/>
+          <rect x="44" y="15" width="32" height="20" rx="3" fill="#B87B6F"/>
+          <rect x="50" y="8" width="20" height="12" rx="3" fill="#B87B6F" opacity="0.6"/>
+          <rect x="44" y="55" width="32" height="18" rx="2" fill="#B87B6F" opacity="0.2"/>
+          <line x1="48" y1="62" x2="72" y2="62" stroke="#B87B6F" stroke-width="1"/>
+          <line x1="48" y1="67" x2="66" y2="67" stroke="#B87B6F" stroke-width="1"/>
+        </svg>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Higiene Bucal</p>
+        <h3 class="product-name">Enxaguante Bucal sem Álcool</h3>
+        <p class="product-desc">Enxaguante bucal com ação antibacteriana e sem álcool. Proporciona hálito fresco e proteção complementar para sua higiene oral.</p>
+        <a class="buy-btn" href="#" target="_blank" rel="noopener">
+          <span class="buy-icon">🛒</span>
+          Comprar
+        </a>
+      </div>
+    </div>
+
+    <!-- Produto 7 - Raspador de Língua -->
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <svg class="placeholder-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M45 30 L45 80 Q45 95 60 95 Q75 95 75 80 L75 30" fill="none" stroke="#B87B6F" stroke-width="3"/>
+          <line x1="45" y1="30" x2="75" y2="30" stroke="#EDD5C5" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Acessórios</p>
+        <h3 class="product-name">Raspador de Língua</h3>
+        <p class="product-desc">Limpador de língua em aço inoxidável que remove a saburra lingual, principal causadora do mau hálito. Uso diário recomendado.</p>
+        <a class="buy-btn" href="#" target="_blank" rel="noopener">
+          <span class="buy-icon">🛒</span>
+          Comprar
+        </a>
+      </div>
+    </div>
+
+    <!-- Produto 8 - Escova Interdental -->
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <svg class="placeholder-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="58" y="15" width="4" height="65" rx="2" fill="#B87B6F"/>
+          <ellipse cx="60" cy="85" rx="18" ry="8" fill="#EDD5C5"/>
+          <line x1="48" y1="35" x2="72" y2="35" stroke="#EDD5C5" stroke-width="2"/>
+          <line x1="50" y1="45" x2="70" y2="45" stroke="#EDD5C5" stroke-width="2"/>
+          <line x1="52" y1="55" x2="68" y2="55" stroke="#EDD5C5" stroke-width="2"/>
+          <line x1="54" y1="65" x2="66" y2="65" stroke="#EDD5C5" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Acessórios</p>
+        <h3 class="product-name">Escova Interdental</h3>
+        <p class="product-desc">Kit com escovas interdentais de diversos tamanhos. Perfeita para quem usa aparelho ou tem espaço entre os dentes.</p>
+        <a class="buy-btn" href="#" target="_blank" rel="noopener">
+          <span class="buy-icon">🛒</span>
+          Comprar
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  <p>Os links de compra são de afiliados. Ao comprar por aqui, você apoia o trabalho da Dra Mari sem custo adicional.</p>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p class="footer-text">Dra. Mariane Ferreira · <a href="index.html">Voltar ao início</a> · @dramarianef</p>
+</footer>
+
+<script>
+  // Intersection Observer for product card animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const delay = Array.from(el.parentNode.children).indexOf(el) * 80;
+        setTimeout(() => el.classList.add('visible'), delay);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.product-card').forEach(card => observer.observe(card));
+</script>
+
+</body>
+</html>
